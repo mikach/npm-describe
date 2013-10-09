@@ -1,0 +1,26 @@
+{
+  "name": "describe",
+  "version": "0.1.0",
+  "description": "NPM package dependencies visualization",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mikach/npm-describe"
+  },
+  "keywords": [
+    "npm",
+    "visualization",
+    "dependencies"
+  ],
+  "author": {
+    "name": "Michael",
+    "email": "mikach27@gmail.com",
+    "url": "https://github.com/mikach"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "nano": "~4.1.4",
+    "commander": "~2.0.0",
+    "async": "~0.2.9"
+  }
+}
