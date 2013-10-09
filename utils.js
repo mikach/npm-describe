@@ -32,6 +32,9 @@ var getPackageInfo = function(name, callback) {
 };
 
 var print = function(pkgName, depth) {
+  if (Object.keys(tree).length === 0) 
+    return console.log('No information found.');
+
   var pkg = tree[pkgName], line = colors.BLUE, i, max;
 
   for (i = 0; i < depth; i++) {
