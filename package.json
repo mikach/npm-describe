@@ -1,6 +1,6 @@
 {
-  "name": "describe",
-  "version": "0.1.0",
+  "name": "npm-describe",
+  "version": "0.1.1",
   "description": "NPM package dependencies visualization",
   "main": "index.js",
   "repository": {
@@ -22,5 +22,10 @@
     "nano": "~4.1.4",
     "commander": "~2.0.0",
     "async": "~0.2.9"
-  }
+  },
+  "engines": {
+    "node": ">=0.8.0"
+  },
+  "bin": "./index.js",
+  "preferGlobal": true
 }

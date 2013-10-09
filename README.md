@@ -6,9 +6,9 @@ NPM package dependencies visualization
 
 Installation: 
 ```
-$ npm install -g describe
+$ npm install -g npm-describe
 ```
 Usage:
 ```
-$ descibe -p jquery
+$ npm-descibe -p jquery
 ```
