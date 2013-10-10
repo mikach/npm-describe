@@ -12,7 +12,7 @@ program
 if (program.package) {
   console.log('Getting info about package...\n');
   utils.getPackageInfo(program.package, function() {
-    utils.print(program.package, 0);
+    utils.print(program.package);
   });  
 } else {
   console.log('Please, specify package name.')

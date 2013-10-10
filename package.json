@@ -1,8 +1,8 @@
 {
   "name": "npm-describe",
-  "version": "0.1.2",
+  "version": "0.1.21",
   "description": "NPM package dependencies visualization",
-  "main": "index.js",
+  "main": "npm-describe",
   "repository": {
     "type": "git",
     "url": "https://github.com/mikach/npm-describe"
@@ -26,6 +26,6 @@
   "engines": {
     "node": ">=0.8.0"
   },
-  "bin": "./index.js",
+  "bin": "./npm-describe",
   "preferGlobal": true
 }

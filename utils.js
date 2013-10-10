@@ -36,6 +36,7 @@ var print = function(pkgName, depth) {
     return console.log('No information found.');
 
   var pkg = tree[pkgName], line = colors.BLUE, i, max;
+  depth = depth || 0;
 
   for (i = 0; i < depth; i++) {
     line += ' | ';
