@@ -1,6 +1,6 @@
 {
   "name": "npm-describe",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "NPM package dependencies visualization",
   "main": "npm-describe",
   "repository": {
@@ -27,6 +27,6 @@
   "engines": {
     "node": ">=0.8.0"
   },
-  "bin": ".bin/npm-describe",
+  "bin": "bin/npm-describe",
   "preferGlobal": true
 }
