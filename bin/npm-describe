@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 var program = require('commander'),
-    utils = require('./utils');
+    lib = require('..');
 
 program
   .version('0.1.0')
@@ -11,8 +11,8 @@ program
 
 if (program.package) {
   console.log('Getting info about package...\n');
-  utils.getPackageInfo(program.package, function() {
-    utils.print(program.package);
+  lib.getPackageInfo(program.package, function() {
+    lib.print(program.package);
   });  
 } else {
   console.log('Please, specify package name.')
