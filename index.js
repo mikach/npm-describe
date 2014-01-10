@@ -1,5 +1,5 @@
 var db = require('nano')('http://isaacs.iriscouch.com/registry'),
-    async = require('async'),
+    map = require('map-async'),
     tree = {},
     colors = {
       BLUE: '\033[36m ',
@@ -24,7 +24,7 @@ var getPackageInfo = function(name, callback) {
     };
     
     if (deps.length > 0) {
-      async.map(deps, getPackageInfo, callback);
+      map(deps, getPackageInfo, callback);
     } else {
       callback();
     }
