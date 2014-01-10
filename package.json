@@ -1,6 +1,6 @@
 {
   "name": "npm-describe",
-  "version": "0.1.21",
+  "version": "0.1.3",
   "description": "NPM package dependencies visualization",
   "main": "npm-describe",
   "repository": {
@@ -10,7 +10,8 @@
   "keywords": [
     "npm",
     "visualization",
-    "dependencies"
+    "dependencies",
+    "packages"
   ],
   "author": {
     "name": "Michael",
@@ -26,6 +27,6 @@
   "engines": {
     "node": ">=0.8.0"
   },
-  "bin": "./npm-describe",
+  "bin": ".bin/npm-describe",
   "preferGlobal": true
 }
