@@ -1,58 +1,107 @@
-var db = require('nano')('http://isaacs.iriscouch.com/registry'),
+var request = require('request'),
     map = require('map-async'),
-    tree = {},
-    colors = {
-      BLUE: '\033[36m ',
-      GREEN: '\033[32m ',
-      DEFAULT: '\033[0m '
+    semver = require('semver'),
+    baseURL = 'http://registry.npmjs.org/',
+    cache = {};
+
+var findVersion = function(pkgData, version) {
+    var versions = Object.keys(pkgData['versions']), v;
+
+    if (version == 'latest') {
+        return pkgData['versions'][versions.pop()]['dependencies'];
+    }
+
+    while (v = versions.pop()) {
+        if (semver.satisfies(v, version)) return pkgData['versions'][v]['dependencies'];
+    }
+
+    return null;
+};
+
+var getPackageDeps = function(package, callback) {
+    var pkg = package.split('@'),
+        name = pkg[0],
+        version = pkg[1] || 'latest';
+
+    if (name in cache && !!cache['name']) return callback(null, findVersion(cache['name'], version));
+
+    request.get(baseURL + name, function(error, response, body) {
+        if (error && response.statusCode !== 200) return callback(error);
+        
+        var data = JSON.parse(body);
+        if (typeof data === 'undefined') console.log(name);
+        cache[name] = data;
+
+        return callback(null, findVersion(data, version));
+    });
+};
+
+var getPackageDepsTree = function(package, callback) {
+    var tree = {};
+
+    var getInfo = function(pkgArr, callback) {
+        getPackageDeps(pkgArr[1], function(err, res) {
+            if (err) return callback();
+
+            var deps = [], name;
+            for (var i in res) {
+                 if (Object.prototype.hasOwnProperty.call(res, i)) {
+                    name = i + '@' + res[i];
+                    deps.push([pkgArr[0][name] = {}, name]);
+                }
+            }
+
+            if (deps.length > 0) {
+                map(deps, getInfo, callback);
+            } else {
+                callback();
+            }
+        });
     };
 
-var getPackageInfo = function(name, callback) {
-  if (name in tree) return callback();
+    getInfo([tree[package] = {}, package], function() {
+        callback(tree);
+    });
+};
 
-  db.get(name, function(err, data) {
-    if (err) return callback();
+var printTree = function(tree) {
+    if (Object.keys(tree).length === 0) {
+        return console.log('No information found.');
+    }
 
-    var latest = Object.keys(data['versions']).pop();
-    var deps = Object.keys( data['versions'][latest]['dependencies'] || {} );
-
-    // console.log(name + '@' + latest);
-
-    tree[name] = {
-      'version': latest,
-      'dependencies': deps
+    var colors = {
+        BLUE: '\033[36m ',
+        GREEN: '\033[32m ',
+        DEFAULT: '\033[0m '
     };
-    
-    if (deps.length > 0) {
-      map(deps, getPackageInfo, callback);
-    } else {
-      callback();
+
+    var printLevel = function(treeNode, pkgName, depth) {
+        depth = depth || 0;
+
+        var line = colors.BLUE, i,
+            pkg = pkgName.split('@'), 
+            name = pkg[0], 
+            version = pkg[1] || 'latest';
+
+        for (i = 0; i < depth; i++) {
+            line += ' | ';
+        }
+        line += colors.DEFAULT;
+
+        console.log(line + name + colors.GREEN + '@' + version + colors.DEFAULT);
+
+        Object.keys(treeNode).forEach(function(node) {
+            printLevel(treeNode[node], node, depth + 1);
+        });
+    };
+
+    for (var i in tree) {
+        if (Object.prototype.hasOwnProperty.call(tree, i)) {
+            printLevel(tree[i], i);
+        }
     }
-  });
 };
 
-var print = function(pkgName, depth) {
-  if (Object.keys(tree).length === 0) 
-    return console.log('No information found.');
-
-  var pkg = tree[pkgName], line = colors.BLUE, i, max;
-  depth = depth || 0;
-
-  for (i = 0; i < depth; i++) {
-    line += ' | ';
-  }
-  line += colors.DEFAULT;
-  console.log(line + pkgName + colors.GREEN + '@' + pkg.version + colors.DEFAULT);
-
-  if (pkg.dependencies.length > 0) {
-    for (i = 0, max = pkg.dependencies.length; i < max; i++) {
-      print(pkg.dependencies[i], depth+1);
-    }
-  }
-};
-
-module.exports = {
-  tree: tree,
-  print: print,
-  getPackageInfo: getPackageInfo
-};
+module.exports.getPackageDeps = getPackageDeps;
+module.exports.getPackageDepsTree = getPackageDepsTree;
+module.exports.printTree = printTree;

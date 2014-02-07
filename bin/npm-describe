@@ -4,15 +4,14 @@ var program = require('commander'),
     lib = require('..');
 
 program
-  .version('0.1.0')
+  .version('1.0.0')
   .option('-p, --package <name>', 'Name of package')
-  // .option('-d, --depth <n>', 'Depth', parseInt)
   .parse(process.argv);
 
 if (program.package) {
   console.log('Getting info about package...\n');
-  lib.getPackageInfo(program.package, function() {
-    lib.print(program.package);
+  lib.getPackageDepsTree(program.package, function(res) {
+    lib.printTree(res);
   });  
 } else {
   console.log('Please, specify package name.')
