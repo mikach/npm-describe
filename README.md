@@ -1,4 +1,4 @@
-# Describe
+# Describe [![NPM version][npm-image]][npm-url]
 
 NPM package dependencies visualization
 
@@ -59,3 +59,6 @@ Result:
   |  |  bindings @*
 
 ```
+
+[npm-url]: https://npmjs.org/package/npm-describe
+[npm-image]: https://badge.fury.io/js/npm-describe.png
