@@ -60,5 +60,18 @@ Result:
 
 ```
 
+## Node API
+
+```js
+var desc = require('npm-describe');
+```
+Methods:
+`getPackageDeps(package, function(err, res) {})` - returns dependencies of package.
+`package` can be in format name@version.
+
+`desc.getPackageDepsTree(package, function(tree) {})` - returns full tree of package's dependencies.
+
+`desc.printTree(tree)` - prints tree.
+
 [npm-url]: https://npmjs.org/package/npm-describe
 [npm-image]: https://badge.fury.io/js/npm-describe.png
