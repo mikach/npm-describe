@@ -1,4 +1,4 @@
-# Describe [![NPM version][npm-image]][npm-url]
+# npm-describe [![NPM version][npm-image]][npm-url]
 
 NPM package dependencies visualization
 

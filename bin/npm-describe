@@ -4,7 +4,7 @@ var program = require('commander'),
     lib = require('..');
 
 program
-  .version('1.0.0')
+  .version('1.0.1')
   .option('-p, --package <name>', 'Name of package')
   .parse(process.argv);
 
