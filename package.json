@@ -1,6 +1,6 @@
 {
   "name": "npm-describe",
-  "version": "0.1.5",
+  "version": "1.0.0",
   "description": "NPM package dependencies visualization",
   "main": "npm-describe",
   "repository": {
@@ -11,7 +11,9 @@
     "npm",
     "visualization",
     "dependencies",
-    "packages"
+    "packages",
+    "versions",
+    "couchdb"
   ],
   "author": {
     "name": "Michael",
@@ -20,9 +22,10 @@
   },
   "license": "MIT",
   "dependencies": {
-    "nano": "~4.1.4",
+    "request": "~2.33.0",
+    "map-async": "~0.1.1",
     "commander": "~2.0.0",
-    "map-async": "~0.1.1"
+    "semver": "~2.2.1"
   },
   "engines": {
     "node": ">=0.8.0"
