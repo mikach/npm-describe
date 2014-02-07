@@ -5,6 +5,8 @@ var request = require('request'),
     cache = {};
 
 var findVersion = function(pkgData, version) {
+    if (!pkgData['versions']) return null;
+
     var versions = Object.keys(pkgData['versions']), v;
 
     if (version == 'latest') {
@@ -29,7 +31,6 @@ var getPackageDeps = function(package, callback) {
         if (error && response.statusCode !== 200) return callback(error);
         
         var data = JSON.parse(body);
-        if (typeof data === 'undefined') console.log(name);
         cache[name] = data;
 
         return callback(null, findVersion(data, version));
