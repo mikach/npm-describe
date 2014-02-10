@@ -1,6 +1,6 @@
 {
   "name": "npm-describe",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "NPM package dependencies visualization",
   "main": "index.js",
   "repository": {
