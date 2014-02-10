@@ -10,7 +10,7 @@ $ npm install -g npm-describe
 ```
 Usage:
 ```
-$ npm-descibe -p jquery@~1.8
+$ npm-describe -p jquery@~1.8
 ```
 Result:
 ```
@@ -73,7 +73,7 @@ Methods:
 
 `desc.printTree(tree)` - prints tree.
 
-## The MIT License (MIT)
+## License (MIT)
 
 Copyright (c) 2014 Michael Kachanovskyi
 
