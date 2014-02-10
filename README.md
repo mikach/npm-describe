@@ -65,7 +65,8 @@ Result:
 ```js
 var desc = require('npm-describe');
 ```
-Methods:
+### Methods:
+
 `getPackageDeps(package, function(err, res) {})` - returns dependencies of package.
 `package` can be in format name@version.
 
