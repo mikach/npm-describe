@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 var program = require('commander'),
+    fs = require('fs'),
     lib = require('..');
 
 program
@@ -23,7 +24,8 @@ if (program.package) {
     }
 
     try {
-        var deps = require(program.file)['dependencies'],
+        var content = fs.readFileSync(program.file),
+            deps = JSON.parse(content)['dependencies'],
             depsArr = [],
             i;
 
@@ -31,7 +33,7 @@ if (program.package) {
             depsArr.push(i + '@' + deps[i]);
         }
     } catch (e) {
-        console.log('Error reading file ' + program.file);
+        return console.error('Error reading file ' + program.file);
     }
 
     lib.getPackageDepsTree(depsArr, function(res) {
