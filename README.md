@@ -60,6 +60,11 @@ Result:
 
 ```
 
+### Reading from package.json file
+```
+$ npm-describe -f path/to/your/package
+```
+
 ## Node API
 
 ```js
