@@ -2,7 +2,10 @@ var request = require('request'),
     map = require('map-async'),
     semver = require('semver'),
     baseURL = 'http://registry.npmjs.org/',
-    cache = {};
+    cache = {},
+    hasOwnProp = Object.prototype.hasOwnProperty;
+
+'use strict';
 
 var findVersion = function(pkgData, version) {
     if (!pkgData['versions']) return null;
@@ -20,12 +23,14 @@ var findVersion = function(pkgData, version) {
     return null;
 };
 
-var getPackageDeps = function(package, callback) {
-    var pkg = package.split('@'),
+var getPackageDeps = function(pkg, callback) {
+    var pkg = pkg.split('@'),
         name = pkg[0],
         version = pkg[1] || 'latest';
 
-    if (name in cache && !!cache['name']) return callback(null, findVersion(cache['name'], version));
+    if (name in cache && !!cache['name']) {
+        return callback(null, findVersion(cache['name'], version));
+    }
 
     request.get(baseURL + name, function(error, response, body) {
         if (error && response.statusCode !== 200) return callback(error);
@@ -33,11 +38,11 @@ var getPackageDeps = function(package, callback) {
         var data = JSON.parse(body);
         cache[name] = data;
 
-        return callback(null, findVersion(data, version));
+        callback(null, findVersion(data, version));
     });
 };
 
-var getPackageDepsTree = function(package, callback) {
+var getPackageDepsTree = function(pkg, callback) {
     var tree = {};
 
     var getInfo = function(pkgArr, callback) {
@@ -45,8 +50,9 @@ var getPackageDepsTree = function(package, callback) {
             if (err) return callback();
 
             var deps = [], name;
+            
             for (var i in res) {
-                 if (Object.prototype.hasOwnProperty.call(res, i)) {
+                 if (hasOwnProp.call(res, i)) {
                     name = i + '@' + res[i];
                     deps.push([pkgArr[0][name] = {}, name]);
                 }
@@ -60,7 +66,7 @@ var getPackageDepsTree = function(package, callback) {
         });
     };
 
-    getInfo([tree[package] = {}, package], function() {
+    getInfo([tree[pkg] = {}, pkg], function() {
         callback(tree);
     });
 };
@@ -97,7 +103,7 @@ var printTree = function(tree) {
     };
 
     for (var i in tree) {
-        if (Object.prototype.hasOwnProperty.call(tree, i)) {
+        if (hasOwnProp.call(tree, i)) {
             printLevel(tree[i], i);
         }
     }
