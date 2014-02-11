@@ -50,7 +50,7 @@ var getPackageDepsTree = function(pkg, callback) {
             if (err) return callback();
 
             var deps = [], name;
-            
+
             for (var i in res) {
                  if (hasOwnProp.call(res, i)) {
                     name = i + '@' + res[i];
@@ -66,9 +66,19 @@ var getPackageDepsTree = function(pkg, callback) {
         });
     };
 
-    getInfo([tree[pkg] = {}, pkg], function() {
-        callback(tree);
-    });
+    if (Array.isArray(pkg)) {
+        var depsArr = [];
+        for (var i = 0; i < pkg.length; i++) {
+            depsArr.push([tree[pkg[i]] = {}, pkg[i]]);
+        }
+        map(depsArr, getInfo, function() {
+            callback(tree);
+        });
+    } else {
+        getInfo([tree[pkg] = {}, pkg], function() {
+            callback(tree);
+        });
+    }
 };
 
 var printTree = function(tree) {

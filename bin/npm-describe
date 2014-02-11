@@ -4,16 +4,39 @@ var program = require('commander'),
     lib = require('..');
 
 program
-  .version(require('../package.json').version)
-  .option('-p, --package <name>', 'Name of package')
-  .parse(process.argv);
+    .version(require('../package.json').version)
+    .option('-p, --package <name>', 'Name of package (can be in format `package@version`)')
+    .option('-f, --file <name>', 'Path to package.json file')
+    .parse(process.argv);
 
 if (program.package) {
-  console.log('Getting info about package...\n');
-  lib.getPackageDepsTree(program.package, function(res) {
-    lib.printTree(res);
-  });  
+    console.log('Getting info about package...\n');
+
+    lib.getPackageDepsTree(program.package, function(res) {
+        lib.printTree(res);
+    });
+} else if (program.file) {
+    console.log('Reading dependencies from package.json...\n');
+
+    if (program.file.indexOf('package.json') === -1) {
+        program.file += '/package.json';
+    }
+
+    try {
+        var deps = require(program.file)['dependencies'],
+            depsArr = [],
+            i;
+
+        for (i in deps) {
+            depsArr.push(i + '@' + deps[i]);
+        }
+    } catch (e) {
+        console.log('Error reading file ' + program.file);
+    }
+
+    lib.getPackageDepsTree(depsArr, function(res) {
+        lib.printTree(res);
+    });
 } else {
-  console.log('Please, specify package name.')
-  console.log('Try `describe --help` for more information.')
+    program.help();
 }
