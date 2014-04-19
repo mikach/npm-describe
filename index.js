@@ -28,8 +28,8 @@ var getPackageDeps = function(pkg, callback) {
         name = pkg[0],
         version = pkg[1] || 'latest';
 
-    if (name in cache && !!cache['name']) {
-        return callback(null, findVersion(cache['name'], version));
+    if (name in cache && !!cache[name]) {
+        return callback(null, findVersion(cache[name], version));
     }
 
     request.get(baseURL + name, function(error, response, body) {
